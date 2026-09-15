@@ -11,27 +11,6 @@ const imageKit = new ImageKit({
 async function createPostController(req,res) {
     console.log(req.body, req.file)
 
-    // yaha hum ye pata karenge ki konsa user post kar raha hai, to hum token ko verify karenge aur user ka id nikalenge
-
-    const token = req.cookies.token
-
-    if(!token) {
-        return res.status(401).json({
-            message:"token not provided unauthorized access"
-        })
-    }
-
-    let decoded = null
-
-    try {
-        decoded = jwt.verify(token, process.env.JWT_SECRET)
-    } catch (error) {
-        return res.status(401).json({
-            message:"invalid token unauthorized access"
-        })
-    }
-
-    console.log(decoded)
 
     const file = await imageKit.files.upload({
         file: await toFile(req.file.buffer, req.file.originalname),
@@ -43,7 +22,7 @@ async function createPostController(req,res) {
     const post = await postModel.create({
         caption: req.body.caption,
         imgUrl: file.url,
-        user: decoded.id
+        user: req.user.id
     })
 
     res.status(201).json({
@@ -53,27 +32,10 @@ async function createPostController(req,res) {
 }
 
 async function getPostController(req,res) {
-    const token = req.cookies.token
-
-    if(!token) {
-        return res.status(401).json({
-            message:"token not provided unauthorized access"
-        })
-    }
-
-    let decodec = null
-
-    try {
-        decoded = jwt.verify(token, process.env.JWT_SECRET)
-    } catch (error) {
-        return res.status(401).json({
-            message:"invalid token unauthorized access"
-        })
-    }
 
     //yaha hum vo sare post ko return karwa rahe hai jo post is user ne create ki hai jise hum ne decode karwaya hai
 
-    const userId = decoded.id
+    const userId = req.user.id
 
     const posts = await postModel.find({
         user: userId
@@ -87,25 +49,8 @@ async function getPostController(req,res) {
 
 async function getPostDetailsController(req,res) {
 
-    const token = req.cookies.token
 
-    if(!token) {
-        return res.status(401).json({
-            message:"token not provided unauthorized access"
-        })
-    }
-
-    let decoded;
-
-    try {
-        decoded = jwt.verify(token, process.env.JWT_SECRET)
-    } catch (error) {
-        return res.status(401).json({
-            message:"invalid token unauthorized access"
-        })
-    }
-
-    const userId = decoded.id
+    const userId = req.user.id
 
     const postId = req.params.postId
 
