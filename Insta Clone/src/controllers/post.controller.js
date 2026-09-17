@@ -65,10 +65,10 @@ async function getPostDetailsController(req,res) {
         })
     }
 
-    res.status(200).json({
-        message:"post details fetched successfully",
-        post
-    })
+    // res.status(200).json({
+    //     message:"post details fetched successfully",
+    //     post
+    // })
 
     const isValidUser = post.user.toString() === userId
 
