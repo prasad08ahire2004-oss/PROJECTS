@@ -17,6 +17,8 @@ postRouter.get("/" , identifyUser, postController.getPostController)
 //is API ke andar hum post id ki help se humne database se post ki details ko fetch kiya aur user ko send kiya
 postRouter.get("/details/:postId" , identifyUser, postController.getPostDetailsController)
 
+postRouter.post("/like/:postId" , identifyUser, postController.likePostController)
+
 
 
 module.exports = postRouter
