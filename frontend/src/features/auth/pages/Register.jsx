@@ -16,6 +16,8 @@ const Register = () => {
       username,
       email,
       password
+    },{
+      withCredentials:true
     })
     .then(res => {
       console.log(res.data)
@@ -31,7 +33,7 @@ const Register = () => {
 
             <h1> Register </h1>
 
-            <form> 
+            <form onSubmit={handleSubmit}> 
         
                 <input
                 onInput={(e)=> {setUsername(e.target.value)}}
@@ -40,7 +42,7 @@ const Register = () => {
 
                 <input 
                 onInput={(e) => {setEmail(e.target.value)}}
-                type="password" name='password' placeholder='Enter password' 
+                type="text" name='password' placeholder='Enter Email' 
                 />
 
                 <input
